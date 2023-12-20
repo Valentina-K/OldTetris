@@ -6,6 +6,7 @@
 
 const PLAYFIELD_COLUMNS = 10;
 const PLAYFIELD_ROWS = 20;
+const START_POSITION = (size) => parseInt((PLAYFIELD_COLUMNS - size) / 2);
 
 const TETROMINO_NAMES = ["O", "L", "J", "S", "Z", "T", "I", "P", "R", "X", "C"];
 const TETROMINOES = [
@@ -15,8 +16,9 @@ const TETROMINOES = [
       [1, 1],
       [1, 1],
     ],
-    row: 2,
-    column: 2,
+    row: 0,
+    column: START_POSITION(2),
+    rotate: 0,
   },
   {
     name: "L",
@@ -25,8 +27,9 @@ const TETROMINOES = [
       [1, 1, 1],
       [0, 0, 0],
     ],
-    row: 3,
-    column: 3,
+    row: 0,
+    column: START_POSITION(3),
+    rotate: 3,
   },
   {
     name: "J",
@@ -35,8 +38,9 @@ const TETROMINOES = [
       [0, 0, 1],
       [0, 1, 1],
     ],
-    row: 3,
+    row: 0,
     column: 3,
+    rotate: START_POSITION(3),
   },
   {
     name: "S",
@@ -45,8 +49,9 @@ const TETROMINOES = [
       [1, 1, 0],
       [0, 0, 0],
     ],
-    row: 3,
-    column: 3,
+    row: 0,
+    column: START_POSITION(3),
+    rotate: 1,
   },
   {
     name: "Z",
@@ -55,8 +60,9 @@ const TETROMINOES = [
       [0, 1, 1],
       [0, 0, 0],
     ],
-    row: 3,
-    column: 3,
+    row: 0,
+    column: START_POSITION(3),
+    rotate: 1,
   },
   {
     name: "T",
@@ -64,8 +70,9 @@ const TETROMINOES = [
       [1, 1],
       [1, 0],
     ],
-    row: 2,
-    column: 2,
+    row: 0,
+    column: START_POSITION(2),
+    rotate: 2,
   },
   {
     name: "I",
@@ -75,8 +82,9 @@ const TETROMINOES = [
       [0, 0, 0, 0],
       [0, 0, 0, 0],
     ],
-    row: 4,
-    column: 4,
+    row: 0,
+    column: START_POSITION(4),
+    rotate: 1,
   },
   {
     name: "P",
@@ -84,8 +92,9 @@ const TETROMINOES = [
       [1, 1],
       [0, 0],
     ],
-    row: 2,
-    column: 2,
+    row: 0,
+    column: START_POSITION(2),
+    rotate: 1,
   },
   {
     name: "R",
@@ -94,8 +103,9 @@ const TETROMINOES = [
       [0, 0, 0],
       [0, 0, 0],
     ],
-    row: 3,
-    column: 3,
+    row: 0,
+    column: START_POSITION(3),
+    rotate: 1,
   },
   {
     name: "X",
@@ -104,14 +114,16 @@ const TETROMINOES = [
       [1, 1, 1],
       [0, 0, 0],
     ],
-    row: 3,
-    column: 3,
+    row: 0,
+    column: START_POSITION(3),
+    rotate: 1,
   },
   {
     name: "C",
     matrix: [[1]],
-    row: 1,
-    column: 1,
+    row: 0,
+    column: START_POSITION(1),
+    rotate: 0,
   },
 ];
 
@@ -129,23 +141,25 @@ function getRandomInt(max) {
 }
 
 function convertPositionToIndex(row, column) {
+  console.log("convertPositionToIndex", row * PLAYFIELD_COLUMNS + column);
   return row * PLAYFIELD_COLUMNS + column;
 }
 
 function generatePlayfield() {
-  for (let i = 0; i < PLAYFIELD_ROWS * PLAYFIELD_COLUMNS; i++) {
+  const playfieldcells = PLAYFIELD_ROWS * PLAYFIELD_COLUMNS;
+  const coutn_cells = playfieldcells + PLAYFIELD_COLUMNS * 4;
+  for (let i = 0; i < coutn_cells; i++) {
     const div = document.createElement("div");
+    if (i >= playfieldcells) div.className = "tetris-footer";
     document.querySelector(".tetris").append(div);
   }
 
   playfield = new Array(PLAYFIELD_ROWS)
     .fill()
     .map(() => new Array(PLAYFIELD_COLUMNS).fill(0));
-  console.log(playfield);
 }
+
 function generateTetromino() {
-  console.log("from generateTetromino");
-  //const nameTetro = TETROMINO_NAMES[getRandomInt(10)];
   tetromino = TETROMINOES[getRandomInt(10)];
   console.log(tetromino);
 }
@@ -164,7 +178,7 @@ function drawPlayField() {
 function drawTetromino() {
   const name = tetromino.name;
   const tetrominoMatrixSize = tetromino.matrix.length;
-
+  console.log("tetrominoMatrixSize", tetrominoMatrixSize);
   for (let row = 0; row < tetrominoMatrixSize; row++) {
     for (let column = 0; column < tetrominoMatrixSize; column++) {
       if (tetromino.matrix[row][column] == 0) {
@@ -178,7 +192,7 @@ function drawTetromino() {
       cells[cellIndex].classList.add(name);
     }
   }
-  console.log("from drawTetromino");
+  console.log("tetromino", tetromino);
 }
 
 function draw() {
@@ -187,11 +201,9 @@ function draw() {
   });
   drawPlayField();
   drawTetromino();
-  console.log("from draw");
 }
 
 function onKeyDown(event) {
-  console.log(event);
   switch (event.key) {
     case "ArrowDown":
       moveTetrominoDown();
