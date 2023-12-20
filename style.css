@@ -1,0 +1,67 @@
+*{
+    margin: 0;
+}
+
+body{
+    background: linear-gradient(90deg, rgba(15,237,245,1) 35%, rgba(1,16,19,0.8463760504201681) 100%);
+    height: 100vh;
+    user-select: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.tetris{
+    background-color: rgba(242, 245, 245, 0.85);
+    padding: 0.5vh;
+    border-radius: 0.5vh;
+    display: grid;
+    grid-template-columns: repeat(10, auto);
+    grid-template-rows: repeat(20, auto);
+}
+
+.tetris div{
+    height: min(4vh, 7vw);
+    width: min(4vh, 7vw);
+    background-color: rgba(97, 75, 75, 0.205);
+    border-radius: 0.3vh;
+    box-shadow: 
+        inset 2px 2px 2px rgba(128, 128, 128, 0.271),
+        inset -2px -2px 2px rgba(22, 87, 217, 0.271);
+}
+
+.tetris .O{
+    background: rgb(188, 201, 10);
+}
+
+.tetris .L{
+    background: rgb(6, 150, 9);
+}
+/* "J", "S", "Z", "T", "I", "P", "R", "X", "C" */
+.tetris .J{
+    background: rgb(255, 20, 147);
+}
+.tetris .S{
+    background: rgb(255, 69, 0);
+}
+.tetris .Z{
+    background: rgb(255,69,0);
+}
+.tetris .T{
+    background: rgb(75, 0, 130);
+}
+.tetris .I{
+    background: rgb(173, 255, 47);
+}
+.tetris .P{
+    background: rgb(0, 139, 139);
+}
+.tetris .R{
+    background: rgb(123, 104, 238);
+}
+.tetris .X{
+    background: rgb(47, 79, 79);
+}
+.tetris .C{
+    background: rgb(188, 201, 10);
+}
