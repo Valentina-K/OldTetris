@@ -129,6 +129,7 @@ const TETROMINOES = [
 
 let playfield;
 let tetromino;
+let isGameOut = false;
 
 generatePlayfield();
 generateTetromino();
@@ -141,10 +142,9 @@ function getRandomInt(max) {
 }
 
 function convertPositionToIndex(row, column) {
-  console.log("convertPositionToIndex", row * PLAYFIELD_COLUMNS + column);
   return row * PLAYFIELD_COLUMNS + column;
 }
-
+/* создается массив playfield и наполняется 0*/
 function generatePlayfield() {
   const playfieldcells = PLAYFIELD_ROWS * PLAYFIELD_COLUMNS;
   const coutn_cells = playfieldcells + PLAYFIELD_COLUMNS * 4;
@@ -160,31 +160,28 @@ function generatePlayfield() {
 }
 
 function generateTetromino() {
-  tetromino = TETROMINOES[getRandomInt(10)];
-  console.log(tetromino);
+  tetromino = Object.create(TETROMINOES[getRandomInt(10)]);
+  console.dir(tetromino);
 }
-
+/* в массиве cells добавляем имя класса '0' в каждую ячейку*/
 function drawPlayField() {
   for (let row = 0; row < PLAYFIELD_ROWS; row++) {
     for (let column = 0; column < PLAYFIELD_COLUMNS; column++) {
-      // if(playfield[row][column] == 0) { continue };
       const name = playfield[row][column];
       const cellIndex = convertPositionToIndex(row, column);
       cells[cellIndex].classList.add(name);
     }
   }
 }
-
+/* В массиве cells добавляем имя класса tetromino, там где в matrix стоит 1 */
 function drawTetromino() {
   const name = tetromino.name;
   const tetrominoMatrixSize = tetromino.matrix.length;
-  console.log("tetrominoMatrixSize", tetrominoMatrixSize);
   for (let row = 0; row < tetrominoMatrixSize; row++) {
     for (let column = 0; column < tetrominoMatrixSize; column++) {
       if (tetromino.matrix[row][column] == 0) {
         continue;
       }
-
       const cellIndex = convertPositionToIndex(
         tetromino.row + row,
         tetromino.column + column
@@ -192,12 +189,11 @@ function drawTetromino() {
       cells[cellIndex].classList.add(name);
     }
   }
-  console.log("tetromino", tetromino);
 }
-
+/* у всех cells удаляется атрибут class и добавляется новый класс из playfield и tetromino*/
 function draw() {
   cells.forEach(function (cell) {
-    cell.removeAttribute("class");
+    if (cell.className !== "tetris-footer") cell.removeAttribute("class");
   });
   drawPlayField();
   drawTetromino();
@@ -220,29 +216,26 @@ function onKeyDown(event) {
 
 function moveTetrominoDown() {
   tetromino.row += 1;
+  console.log(cells);
   if (isOutsideOfGameBoard()) {
     tetromino.row -= 1;
     placeTetromino();
   }
-  console.log("from moveTetrominoDown");
 }
 function moveTetrominoLeft() {
   tetromino.column -= 1;
   if (isOutsideOfGameBoard()) {
     tetromino.column += 1;
   }
-  console.log("from moveTetrominoLeft");
 }
 function moveTetrominoRight() {
   tetromino.column += 1;
   if (isOutsideOfGameBoard()) {
     tetromino.column -= 1;
   }
-  console.log("from moveTetrominoRight");
 }
 
 function isOutsideOfGameBoard() {
-  console.log("from isOutsideOfGameBoard");
   const matrixSize = tetromino.matrix.length;
   for (let row = 0; row < matrixSize; row++) {
     for (let column = 0; column < matrixSize; column++) {
@@ -252,7 +245,8 @@ function isOutsideOfGameBoard() {
       if (
         tetromino.column + column < 0 ||
         tetromino.column + column >= PLAYFIELD_COLUMNS ||
-        tetromino.row + row >= playfield.length
+        tetromino.row + row >= playfield.length ||
+        playfield[tetromino.row + row][tetromino.column + column] !== 0
       ) {
         return true;
       }
@@ -262,15 +256,20 @@ function isOutsideOfGameBoard() {
 }
 
 function placeTetromino() {
-  console.log("from placeTetromino");
+  console.log("object");
+  console.log(tetromino);
   const matrixSize = tetromino.matrix.length;
   for (let row = 0; row < matrixSize; row++) {
     for (let column = 0; column < matrixSize; column++) {
-      if (!tetromino.matrix[row][column]) continue;
-
+      if (!tetromino.matrix[row][column]) continue; //если в ячейке стоит 0
+      console.log(playfield);
       playfield[tetromino.row + row][tetromino.column + column] =
-        TETROMINO_NAMES[0];
+        tetromino.name;
     }
   }
   generateTetromino();
+}
+
+function endOfGameCheck() {
+  return playfield[0].some((el) => el != 0);
 }
