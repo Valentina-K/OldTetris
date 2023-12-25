@@ -47,9 +47,9 @@ const TETROMINOES = [
   {
     name: "J",
     matrix: [
-      [0, 0, 1],
-      [0, 0, 1],
-      [0, 1, 1],
+      [1, 0, 0],
+      [1, 1, 1],
+      [0, 0, 0],
     ],
     row: 0,
     column: 3,
@@ -90,8 +90,8 @@ const TETROMINOES = [
   {
     name: "I",
     matrix: [
-      [1, 1, 1, 1],
       [0, 0, 0, 0],
+      [1, 1, 1, 1],
       [0, 0, 0, 0],
       [0, 0, 0, 0],
     ],
@@ -112,8 +112,8 @@ const TETROMINOES = [
   {
     name: "R",
     matrix: [
-      [1, 1, 1],
       [0, 0, 0],
+      [1, 1, 1],
       [0, 0, 0],
     ],
     row: 0,
@@ -147,29 +147,41 @@ const TETROMINOES = [
     ],
     row: 0,
     column: START_POSITION(3),
-    rotate: 4,
+    rotate: 3,
   },
 ];
 
 let playfield;
 let tetromino;
+let scores = 0;
+let timerId = null;
 
 generatePlayfield();
 generateTetromino();
 const cells = document.querySelectorAll(".tetris div");
 const newGameBtn = document.querySelector("[data-new-button]");
 const modal_window = document.querySelector("[data-madal]");
+const scoresElem = document.querySelector(".scores");
 drawTetromino();
 document.addEventListener("keydown", onKeyDown);
 newGameBtn.addEventListener("click", newGameClick);
+timerId = setInterval(() => {
+  moveTetrominoDown();
+  draw();
+}, 1000);
 
 function newGameClick() {
   toggleModal();
+  scores = 0;
+
   playfield = new Array(PLAYFIELD_ROWS)
     .fill()
     .map(() => new Array(PLAYFIELD_COLUMNS).fill(0));
   generateTetromino();
-  draw();
+  timerId = setInterval(() => {
+    moveTetrominoDown();
+    draw();
+  }, 1000);
 }
 
 function toggleModal() {
@@ -233,7 +245,11 @@ function draw() {
   cells.forEach(function (cell) {
     if (cell.className !== "tetris-footer") cell.removeAttribute("class");
   });
-  if (endOfGameCheck()) toggleModal();
+  if (endOfGameCheck()) {
+    clearInterval(timerId);
+    scoresElem.textContent = `Your scores is ${scores}`;
+    toggleModal();
+  }
   drawPlayField();
   drawTetromino();
 }
@@ -255,8 +271,6 @@ function onKeyDown(event) {
   }
   draw();
 }
-
-function rotateTetromino() {}
 
 function moveTetrominoDown() {
   tetromino.row += 1;
@@ -299,20 +313,69 @@ function isOutsideOfGameBoard() {
 }
 
 function placeTetromino() {
-  console.log("object");
-  console.log(tetromino);
   const matrixSize = tetromino.matrix.length;
   for (let row = 0; row < matrixSize; row++) {
     for (let column = 0; column < matrixSize; column++) {
       if (!tetromino.matrix[row][column]) continue; //если в ячейке стоит 0
-      console.log(playfield);
       playfield[tetromino.row + row][tetromino.column + column] =
         tetromino.name;
     }
   }
+  const filledRows = findFilledRows();
+  removeFillRows(filledRows);
   generateTetromino();
 }
 
 function endOfGameCheck() {
   return playfield[0].some((el) => el != 0);
+}
+
+function rotateTetromino() {
+  if (tetromino.rotate === 0) return;
+  const rotatedMatrix = rotateMatrix(tetromino.matrix);
+  tetromino.matrix = rotatedMatrix;
+}
+
+function rotateMatrix(matrixTetromino) {
+  const N = matrixTetromino.length;
+  const rotateMatrix = [];
+  for (let i = 0; i < N; i++) {
+    rotateMatrix[i] = [];
+    for (let j = 0; j < N; j++) {
+      rotateMatrix[i][j] = matrixTetromino[N - j - 1][i];
+    }
+  }
+  return rotateMatrix;
+}
+
+function removeFillRows(filledRows) {
+  // filledRows.forEach(row => {
+  //     dropRowsAbove(row);
+  // })
+
+  for (let i = 0; i < filledRows.length; i++) {
+    const row = filledRows[i];
+    dropRowsAbove(row);
+  }
+}
+
+function dropRowsAbove(rowDelete) {
+  for (let row = rowDelete; row > 0; row--) {
+    playfield[row] = playfield[row - 1];
+  }
+
+  playfield[0] = new Array(PLAYFIELD_COLUMNS).fill(0);
+}
+
+function findFilledRows() {
+  const filledRows = [];
+
+  playfield.forEach((row, index) => {
+    if (row.every((cell) => cell !== 0)) filledRows.push(index);
+  });
+  scores +=
+    filledRows.length > 1
+      ? filledRows.length * 10 + 10
+      : filledRows.length * 10;
+  return filledRows;
 }
