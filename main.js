@@ -8,7 +8,20 @@ const PLAYFIELD_COLUMNS = 10;
 const PLAYFIELD_ROWS = 20;
 const START_POSITION = (size) => parseInt((PLAYFIELD_COLUMNS - size) / 2);
 
-const TETROMINO_NAMES = ["O", "L", "J", "S", "Z", "T", "I", "P", "R", "X", "C"];
+const TETROMINO_NAMES = [
+  "O",
+  "L",
+  "J",
+  "S",
+  "Z",
+  "T",
+  "I",
+  "P",
+  "R",
+  "X",
+  "C",
+  "N",
+];
 const TETROMINOES = [
   {
     name: "O",
@@ -125,17 +138,43 @@ const TETROMINOES = [
     column: START_POSITION(1),
     rotate: 0,
   },
+  {
+    name: "N",
+    matrix: [
+      [1, 1, 1],
+      [0, 1, 0],
+      [0, 0, 0],
+    ],
+    row: 0,
+    column: START_POSITION(3),
+    rotate: 4,
+  },
 ];
 
 let playfield;
 let tetromino;
-let isGameOut = false;
 
 generatePlayfield();
 generateTetromino();
 const cells = document.querySelectorAll(".tetris div");
+const newGameBtn = document.querySelector("[data-new-button]");
+const modal_window = document.querySelector("[data-madal]");
 drawTetromino();
 document.addEventListener("keydown", onKeyDown);
+newGameBtn.addEventListener("click", newGameClick);
+
+function newGameClick() {
+  toggleModal();
+  playfield = new Array(PLAYFIELD_ROWS)
+    .fill()
+    .map(() => new Array(PLAYFIELD_COLUMNS).fill(0));
+  generateTetromino();
+  draw();
+}
+
+function toggleModal() {
+  modal_window.classList.toggle("is-hidden");
+}
 
 function getRandomInt(max) {
   return Math.floor(Math.random() * max);
@@ -160,8 +199,7 @@ function generatePlayfield() {
 }
 
 function generateTetromino() {
-  tetromino = Object.create(TETROMINOES[getRandomInt(10)]);
-  console.dir(tetromino);
+  tetromino = Object.create(TETROMINOES[getRandomInt(TETROMINO_NAMES.length)]);
 }
 /* в массиве cells добавляем имя класса '0' в каждую ячейку*/
 function drawPlayField() {
@@ -195,12 +233,16 @@ function draw() {
   cells.forEach(function (cell) {
     if (cell.className !== "tetris-footer") cell.removeAttribute("class");
   });
+  if (endOfGameCheck()) toggleModal();
   drawPlayField();
   drawTetromino();
 }
 
 function onKeyDown(event) {
   switch (event.key) {
+    case "ArrowUp":
+      rotateTetromino();
+      break;
     case "ArrowDown":
       moveTetrominoDown();
       break;
@@ -214,9 +256,10 @@ function onKeyDown(event) {
   draw();
 }
 
+function rotateTetromino() {}
+
 function moveTetrominoDown() {
   tetromino.row += 1;
-  console.log(cells);
   if (isOutsideOfGameBoard()) {
     tetromino.row -= 1;
     placeTetromino();

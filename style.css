@@ -35,13 +35,13 @@ background-color: rgba(255,255,255,0.9);
 }
 
 .tetris .O{
-    background: rgb(188, 201, 10);
+    background: rgb(244, 204, 4);
 }
 
 .tetris .L{
     background: rgb(6, 150, 9);
 }
-/* "J", "S", "Z", "T", "I", "P", "R", "X", "C" */
+
 .tetris .J{
     background: rgb(255, 20, 147);
 }
@@ -49,7 +49,7 @@ background-color: rgba(255,255,255,0.9);
     background: rgb(255, 69, 0);
 }
 .tetris .Z{
-    background: rgb(255,69,0);
+    background: rgb(246, 5, 210);
 }
 .tetris .T{
     background: rgb(75, 0, 130);
@@ -64,8 +64,71 @@ background-color: rgba(255,255,255,0.9);
     background: rgb(123, 104, 238);
 }
 .tetris .X{
-    background: rgb(47, 79, 79);
+    background: rgba(55, 239, 9, 0.893);
 }
 .tetris .C{
     background: rgb(188, 201, 10);
 }
+
+.tetris .N{
+    background-color: rgb(8, 116, 240);
+}
+
+.backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 99;
+    background-color: rgba(0, 0, 0, 0.2);
+    transition: opacity 250ms cubic-bezier(0.4, 0, 0.2, 1), visibility 250ms cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .backdrop.is-hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+  
+  .modal {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    padding: 40px 20px 0;
+    /*  overflow: auto; */
+    transform: translate(-50%, -50%) scale(1);
+    width: 200px;
+    height: 200px;
+    border-radius: 8px;
+    background-color: #fff;
+    transition: transform 250ms cubic-bezier(0.4, 0, 0.2, 1);
+  } 
+  
+  .backdrop.is-hidden .modal {
+    transform: translate(-50%, -50%) scale(0.8);
+  }
+  .modal-title{
+    text-align: center;
+    font-size: 30px;
+    margin-bottom: 30px;
+    color: goldenrod;
+  }
+  .modal-button{
+    display: block;
+    margin: 0 auto;
+    padding: 10px;
+    border-radius: 8px;
+    border:none;
+    background-color: rgb(16, 232, 38);
+    color: rgb(149 132 62);
+    font-size: 20px;
+    box-shadow:  1px 1px 2px 2px rgba(6, 102, 6, 0.75);
+    -webkit-box-shadow:  1px 1px 2px 2px rgba(6, 102, 6, 0.75);
+    -moz-box-shadow:  1px 1px 2px 2px rgba(6, 102, 6, 0.75);
+  }
+  .modal-button:hover{
+    box-shadow:inset 1px 1px 2px 2px rgba(6, 102, 6, 0.75);
+    -webkit-box-shadow:inset 1px 1px 2px 2px rgba(6, 102, 6, 0.75);
+    -moz-box-shadow:inset 1px 1px 2px 2px rgba(6, 102, 6, 0.75);
+    background-color: rgb(16, 232, 38);
+  }
