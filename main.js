@@ -378,36 +378,3 @@ function findFilledRows() {
     filledRows.length > 1 ? filledRows.length * 20 : filledRows.length * 10;
   return filledRows;
 }
-
-/* function isValid() {
-	const matrixSize = tetromino.matrix.length;
-	for (let row = 0; row < matrixSize; row++) {
-		for (let column = 0; column < matrixSize; column++) {
-			if (tetromino.matrix[row][column] == 0) {
-				continue;
-			}
-			if (isOutsideOfGameBoard(row, column)) {
-				return true;
-			}
-			if (hasColisions(row, column)) {
-				return true;
-			}
-		}
-	}
-	return false;
-}
-
-// Restricting movement the figure on the field
-function isOutsideOfGameBoard(row, column) {
-	return (
-		tetromino.column + column < 0 ||
-		tetromino.column + column >= PLAYFIELD_COLUMNS ||
-		tetromino.row + row >= PLAYFIELD_ROWS
-	);
-}
-
-// Restricting colision
-function hasColisions(row, column) {
-	return playfield[tetromino.row + row]?.[tetromino.column + column];
-}
- */
