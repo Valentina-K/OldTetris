@@ -7,7 +7,31 @@
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <div class="tetris"></div>
+    <div class="settings">
+      <p>Speed:</p>
+      <div class="radio">
+        <input
+          type="radio"
+          id="1x"
+          class="input-radio"
+          name="1x"
+          value="1"
+          checked
+        />
+        <label class="radio-label" for="1x">1x</label>
+      </div>
+      <div class="radio">
+        <input type="radio" id="2x" class="input-radio" name="2x" value="2" />
+        <label class="radio-label" for="2x">2x</label>
+      </div>
+      <div class="radio">
+        <input type="radio" id="3x" class="input-radio" name="3x" value="3" />
+        <label class="radio-label" for="3x">3x</label>
+      </div>
+    </div>
+    <div class="tetris-wrap">
+      <div class="tetris"></div>
+    </div>
     <div class="backdrop is-hidden" data-madal>
       <div class="modal">
         <h2 class="modal-title">Game out!</h2>

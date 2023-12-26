@@ -162,6 +162,9 @@ const cells = document.querySelectorAll(".tetris div");
 const newGameBtn = document.querySelector("[data-new-button]");
 const modal_window = document.querySelector("[data-madal]");
 const scoresElem = document.querySelector(".scores");
+const radios = document.querySelectorAll(".input-radio");
+console.log(radios);
+radios.forEach((elem) => elem.addEventListener("checked", onChecked));
 drawTetromino();
 document.addEventListener("keydown", onKeyDown);
 newGameBtn.addEventListener("click", newGameClick);
@@ -169,6 +172,10 @@ timerId = setInterval(() => {
   moveTetrominoDown();
   draw();
 }, 1000);
+
+function onChecked(ev) {
+  console.log(ev);
+}
 
 function newGameClick() {
   toggleModal();
