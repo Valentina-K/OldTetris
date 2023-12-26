@@ -31,7 +31,6 @@ const TETROMINOES = [
     ],
     row: 0,
     column: START_POSITION(2),
-    rotate: 0,
   },
   {
     name: "L",
@@ -42,7 +41,6 @@ const TETROMINOES = [
     ],
     row: 0,
     column: START_POSITION(3),
-    rotate: 3,
   },
   {
     name: "J",
@@ -52,8 +50,7 @@ const TETROMINOES = [
       [0, 0, 0],
     ],
     row: 0,
-    column: 3,
-    rotate: START_POSITION(3),
+    column: START_POSITION(3),
   },
   {
     name: "S",
@@ -64,7 +61,6 @@ const TETROMINOES = [
     ],
     row: 0,
     column: START_POSITION(3),
-    rotate: 1,
   },
   {
     name: "Z",
@@ -75,7 +71,6 @@ const TETROMINOES = [
     ],
     row: 0,
     column: START_POSITION(3),
-    rotate: 1,
   },
   {
     name: "T",
@@ -85,7 +80,6 @@ const TETROMINOES = [
     ],
     row: 0,
     column: START_POSITION(2),
-    rotate: 2,
   },
   {
     name: "I",
@@ -97,7 +91,6 @@ const TETROMINOES = [
     ],
     row: 0,
     column: START_POSITION(4),
-    rotate: 1,
   },
   {
     name: "P",
@@ -107,7 +100,6 @@ const TETROMINOES = [
     ],
     row: 0,
     column: START_POSITION(2),
-    rotate: 1,
   },
   {
     name: "R",
@@ -118,7 +110,6 @@ const TETROMINOES = [
     ],
     row: 0,
     column: START_POSITION(3),
-    rotate: 1,
   },
   {
     name: "X",
@@ -129,14 +120,12 @@ const TETROMINOES = [
     ],
     row: 0,
     column: START_POSITION(3),
-    rotate: 1,
   },
   {
     name: "C",
     matrix: [[1]],
     row: 0,
     column: START_POSITION(1),
-    rotate: 0,
   },
   {
     name: "N",
@@ -147,7 +136,6 @@ const TETROMINOES = [
     ],
     row: 0,
     column: START_POSITION(3),
-    rotate: 3,
   },
 ];
 
@@ -205,10 +193,8 @@ function convertPositionToIndex(row, column) {
 /* создается массив playfield и наполняется 0*/
 function generatePlayfield() {
   const playfieldcells = PLAYFIELD_ROWS * PLAYFIELD_COLUMNS;
-  const coutn_cells = playfieldcells + PLAYFIELD_COLUMNS * 4;
-  for (let i = 0; i < coutn_cells; i++) {
+  for (let i = 0; i < playfieldcells; i++) {
     const div = document.createElement("div");
-    if (i >= playfieldcells) div.className = "tetris-footer";
     document.querySelector(".tetris").append(div);
   }
 
@@ -250,7 +236,7 @@ function drawTetromino() {
 /* у всех cells удаляется атрибут class и добавляется новый класс из playfield и tetromino*/
 function draw() {
   cells.forEach(function (cell) {
-    if (cell.className !== "tetris-footer") cell.removeAttribute("class");
+    cell.removeAttribute("class");
   });
   if (endOfGameCheck()) {
     clearInterval(timerId);
@@ -381,8 +367,6 @@ function findFilledRows() {
     if (row.every((cell) => cell !== 0)) filledRows.push(index);
   });
   scores +=
-    filledRows.length > 1
-      ? filledRows.length * 10 + 10
-      : filledRows.length * 10;
+    filledRows.length > 1 ? filledRows.length * 20 : filledRows.length * 10;
   return filledRows;
 }
