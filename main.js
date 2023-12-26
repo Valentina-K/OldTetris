@@ -49,7 +49,7 @@ const TETROMINOES = [
       [1, 1, 1],
       [0, 0, 0],
     ],
-    row: 0,
+    row: -2,
     column: START_POSITION(3),
   },
   {
@@ -59,7 +59,7 @@ const TETROMINOES = [
       [1, 1, 0],
       [0, 0, 0],
     ],
-    row: 0,
+    row: -2,
     column: START_POSITION(3),
   },
   {
@@ -69,7 +69,7 @@ const TETROMINOES = [
       [0, 1, 1],
       [0, 0, 0],
     ],
-    row: 0,
+    row: -2,
     column: START_POSITION(3),
   },
   {
@@ -78,7 +78,7 @@ const TETROMINOES = [
       [1, 1],
       [1, 0],
     ],
-    row: 0,
+    row: -2,
     column: START_POSITION(2),
   },
   {
@@ -89,7 +89,7 @@ const TETROMINOES = [
       [0, 0, 0, 0],
       [0, 0, 0, 0],
     ],
-    row: 0,
+    row: -2,
     column: START_POSITION(4),
   },
   {
@@ -98,7 +98,7 @@ const TETROMINOES = [
       [1, 1],
       [0, 0],
     ],
-    row: 0,
+    row: -2,
     column: START_POSITION(2),
   },
   {
@@ -108,7 +108,7 @@ const TETROMINOES = [
       [1, 1, 1],
       [0, 0, 0],
     ],
-    row: 0,
+    row: -2,
     column: START_POSITION(3),
   },
   {
@@ -118,7 +118,7 @@ const TETROMINOES = [
       [1, 1, 1],
       [0, 0, 0],
     ],
-    row: 0,
+    row: -2,
     column: START_POSITION(3),
   },
   {
@@ -134,7 +134,7 @@ const TETROMINOES = [
       [0, 1, 0],
       [0, 0, 0],
     ],
-    row: 0,
+    row: -2,
     column: START_POSITION(3),
   },
 ];
@@ -143,6 +143,7 @@ let playfield;
 let tetromino;
 let scores = 0;
 let timerId = null;
+let speed = 1;
 
 generatePlayfield();
 generateTetromino();
@@ -150,19 +151,26 @@ const cells = document.querySelectorAll(".tetris div");
 const newGameBtn = document.querySelector("[data-new-button]");
 const modal_window = document.querySelector("[data-madal]");
 const scoresElem = document.querySelector(".scores");
+const currentScoresEl = document.querySelector(".currentScores > span");
 const radios = document.querySelectorAll(".input-radio");
-console.log(radios);
-radios.forEach((elem) => elem.addEventListener("checked", onChecked));
+radios.forEach((elem) => elem.addEventListener("change", onChanged));
 drawTetromino();
 document.addEventListener("keydown", onKeyDown);
 newGameBtn.addEventListener("click", newGameClick);
 timerId = setInterval(() => {
   moveTetrominoDown();
   draw();
-}, 1000);
+}, 1000 / speed);
 
-function onChecked(ev) {
-  console.log(ev);
+function onChanged(ev) {
+  console.dir(ev.target);
+  speed = parseInt(ev.target.value);
+  ev.target.blur();
+  clearInterval(timerId);
+  timerId = setInterval(() => {
+    moveTetrominoDown();
+    draw();
+  }, 1000 / speed);
 }
 
 function newGameClick() {
@@ -176,7 +184,7 @@ function newGameClick() {
   timerId = setInterval(() => {
     moveTetrominoDown();
     draw();
-  }, 1000);
+  }, 1000 / speed);
 }
 
 function toggleModal() {
@@ -223,6 +231,9 @@ function drawTetromino() {
   for (let row = 0; row < tetrominoMatrixSize; row++) {
     for (let column = 0; column < tetrominoMatrixSize; column++) {
       if (tetromino.matrix[row][column] == 0) {
+        continue;
+      }
+      if (tetromino.row + row < 0) {
         continue;
       }
       const cellIndex = convertPositionToIndex(
@@ -296,7 +307,7 @@ function isOutsideOfGameBoard() {
         tetromino.column + column < 0 ||
         tetromino.column + column >= PLAYFIELD_COLUMNS ||
         tetromino.row + row >= playfield.length ||
-        playfield[tetromino.row + row][tetromino.column + column] !== 0
+        playfield[tetromino.row + row]?.[tetromino.column + column]
       ) {
         return true;
       }
@@ -324,9 +335,9 @@ function endOfGameCheck() {
 }
 
 function rotateTetromino() {
-  if (tetromino.rotate === 0) return;
+  const oldMatrix = tetromino.matrix;
   const rotatedMatrix = rotateMatrix(tetromino.matrix);
-  tetromino.matrix = rotatedMatrix;
+  tetromino.matrix = isOutsideOfGameBoard() ? oldMatrix : rotatedMatrix;
 }
 
 function rotateMatrix(matrixTetromino) {
@@ -342,14 +353,10 @@ function rotateMatrix(matrixTetromino) {
 }
 
 function removeFillRows(filledRows) {
-  // filledRows.forEach(row => {
-  //     dropRowsAbove(row);
-  // })
-
-  for (let i = 0; i < filledRows.length; i++) {
-    const row = filledRows[i];
+  filledRows.forEach((row) => {
     dropRowsAbove(row);
-  }
+  });
+  currentScoresEl.innerHTML = `${scores}`;
 }
 
 function dropRowsAbove(rowDelete) {
