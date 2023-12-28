@@ -7,19 +7,55 @@ body{
     height: 100vh;
 }
 
-.settings{
-    padding: 10px;
-    display: flex;
-    justify-content: center;
-    align-items: baseline;
-    margin-bottom: 10px;
+p{
+  font-size: 24px;
+  color: white;
 }
-.settings >p{
-    font-size: 20px;
-    text-align: center;
+.scores-block{
+  margin: 20px auto;
+  display: flex;
+  justify-content: space-around;  
+}
+
+.settings{
+  display: flex;
+  flex-direction: column;
+  gap: 60px 
+}
+
+.restart-btn{
+  padding: 20px;
+  border-radius: 50%;
+  font-size: 20px;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  text-transform: uppercase;
+  background-color: rgb(54, 183, 7);
+  color: white;
+  transition: color 0.5s, background-color 0.5s;
+}
+
+.restart-btn:hover{
+  color:rgb(202, 120, 21);
+  background-color: greenyellow;
+}
+
+.speed{
+  padding: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: baseline;
+  margin-bottom: 10px;
+  flex-direction: column;
+}
+.speed >p{
+  margin-bottom: 10px;
 }
 .radio {
     margin: 0.5rem;
+    font-size: 20px;
+    color: white;
     input[type="radio"] {
       position: absolute;
       opacity: 0;
@@ -76,15 +112,31 @@ body{
     }
   }
 
-  .currentScores{
-    text-align: center;
-    font-size: 24px;
+  
+  .navigation-btn{
+    padding: 10px;
+    border-radius: 50%;
+    cursor: pointer;
+    border: none;
+    width: 64px;
+    height: 64px;
+    padding: 0;
+    background-color: transparent; 
+  }
+  .navigation-center{
+    display: flex;
+    gap: 20px;
+  }
+  .navigation-out{
+    margin: 0 auto;
+    display: block;
   }
 
 .tetris-wrap{
     display: flex;
     justify-content: center;
     align-items: center;
+    gap: 20px;
 }
 
 .tetris{
@@ -189,7 +241,7 @@ background-color: rgba(255,255,255,0.9);
     margin-bottom: 30px;
     color: goldenrod;
   }
-  .scores{
+  .modal-scores{
     text-align: center;
     font-size: 26px;
     margin-bottom: 20px;
@@ -214,3 +266,5 @@ background-color: rgba(255,255,255,0.9);
     -moz-box-shadow:inset 1px 1px 2px 2px rgba(6, 102, 6, 0.75);
     background-color: rgb(16, 232, 38);
   }
+
+  

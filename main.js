@@ -7,6 +7,9 @@
 const PLAYFIELD_COLUMNS = 10;
 const PLAYFIELD_ROWS = 20;
 const START_POSITION = (size) => parseInt((PLAYFIELD_COLUMNS - size) / 2);
+const STORAGE_RESULT = localStorage.getItem("result")
+  ? localStorage.getItem("result")
+  : 0;
 
 const TETROMINO_NAMES = [
   "O",
@@ -144,23 +147,32 @@ let tetromino;
 let scores = 0;
 let timerId = null;
 let speed = 1;
+let best_result =
+  parseInt(STORAGE_RESULT) > scores ? parseInt(STORAGE_RESULT) : scores;
 
 generatePlayfield();
 generateTetromino();
 const cells = document.querySelectorAll(".tetris div");
 const newGameBtn = document.querySelector("[data-new-button]");
 const modal_window = document.querySelector("[data-madal]");
-const scoresElem = document.querySelector(".scores");
-const currentScoresEl = document.querySelector(".currentScores > span");
 const radios = document.querySelectorAll(".input-radio");
+const navigationBtn = document.querySelectorAll(".navigation-btn");
+const restartBtn = document.querySelector(".restart-btn");
 radios.forEach((elem) => elem.addEventListener("change", onChanged));
+navigationBtn.forEach((el) => el.addEventListener("click", onBtnDown));
+
 drawTetromino();
 document.addEventListener("keydown", onKeyDown);
 newGameBtn.addEventListener("click", newGameClick);
+restartBtn.addEventListener("click", onRestart);
 timerId = setInterval(() => {
   moveTetrominoDown();
   draw();
 }, 1000 / speed);
+
+function onRestart() {
+  initGame();
+}
 
 function onChanged(ev) {
   console.dir(ev.target);
@@ -173,10 +185,9 @@ function onChanged(ev) {
   }, 1000 / speed);
 }
 
-function newGameClick() {
-  toggleModal();
+function initGame() {
   scores = 0;
-
+  document.querySelector(".currentScores > span").innerHTML = `${scores}`;
   playfield = new Array(PLAYFIELD_ROWS)
     .fill()
     .map(() => new Array(PLAYFIELD_COLUMNS).fill(0));
@@ -185,6 +196,15 @@ function newGameClick() {
     moveTetrominoDown();
     draw();
   }, 1000 / speed);
+}
+
+function newGameClick() {
+  toggleModal();
+  best_result = parseInt(STORAGE_RESULT) > scores ? STORAGE_RESULT : scores;
+  localStorage.setItem("result", JSON.stringify(best_result));
+  document.querySelector(".best-result > span").innerHTML = best_result;
+
+  initGame();
 }
 
 function toggleModal() {
@@ -251,11 +271,31 @@ function draw() {
   });
   if (endOfGameCheck()) {
     clearInterval(timerId);
-    scoresElem.textContent = `Your scores is ${scores}`;
+    document.querySelector(
+      ".modal-scores"
+    ).innerHTML = `Your scores is ${scores}`;
     toggleModal();
   }
   drawPlayField();
   drawTetromino();
+}
+
+function onBtnDown(event) {
+  switch (event.target.id) {
+    case "rotate":
+      rotateTetromino();
+      break;
+    case "down":
+      moveTetrominoDown();
+      break;
+    case "left":
+      moveTetrominoLeft();
+      break;
+    case "right":
+      moveTetrominoRight();
+      break;
+  }
+  draw();
 }
 
 function onKeyDown(event) {
@@ -316,11 +356,19 @@ function isOutsideOfGameBoard() {
   return false;
 }
 
+function isOutsideTopBoard(row) {
+  return tetromino.row + row < 0;
+}
+
 function placeTetromino() {
   const matrixSize = tetromino.matrix.length;
   for (let row = 0; row < matrixSize; row++) {
     for (let column = 0; column < matrixSize; column++) {
       if (!tetromino.matrix[row][column]) continue; //если в ячейке стоит 0
+      if (isOutsideTopBoard(row)) {
+        //isGameOver = true;
+        return;
+      }
       playfield[tetromino.row + row][tetromino.column + column] =
         tetromino.name;
     }
@@ -357,7 +405,7 @@ function removeFillRows(filledRows) {
   filledRows.forEach((row) => {
     dropRowsAbove(row);
   });
-  currentScoresEl.innerHTML = `${scores}`;
+  document.querySelector(".currentScores > span").innerHTML = `${scores}`;
 }
 
 function dropRowsAbove(rowDelete) {

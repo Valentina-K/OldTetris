@@ -7,48 +7,98 @@
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <div class="settings">
-      <p>Speed:</p>
-      <div class="radio">
-        <input
-          type="radio"
-          id="1x"
-          class="input-radio"
-          name="speed"
-          value="1"
-          checked
-        />
-        <label class="radio-label" for="1x">1x</label>
-      </div>
-      <div class="radio">
-        <input
-          type="radio"
-          id="2x"
-          class="input-radio"
-          name="speed"
-          value="2"
-        />
-        <label class="radio-label" for="2x">2x</label>
-      </div>
-      <div class="radio">
-        <input
-          type="radio"
-          id="3x"
-          class="input-radio"
-          name="speed"
-          value="3"
-        />
-        <label class="radio-label" for="3x">3x</label>
-      </div>
+    <div class="scores-block">
+      <p class="currentScores">Scores: <span></span></p>
+      <p class="best-result">Best result: <span></span></p>
     </div>
-    <p class="currentScores">Scores: <span></span></p>
     <div class="tetris-wrap">
+      <div class="next-figure"></div>
       <div class="tetris"></div>
+      <div class="settings">
+        <button type="button" class="restart-btn">Restart</button>
+        <div class="speed">
+          <p>Speed:</p>
+          <div class="radio">
+            <input
+              type="radio"
+              id="1x"
+              class="input-radio"
+              name="speed"
+              value="1"
+              checked
+            />
+            <label class="radio-label" for="1x">1x</label>
+          </div>
+          <div class="radio">
+            <input
+              type="radio"
+              id="2x"
+              class="input-radio"
+              name="speed"
+              value="2"
+            />
+            <label class="radio-label" for="2x">2x</label>
+          </div>
+          <div class="radio">
+            <input
+              type="radio"
+              id="3x"
+              class="input-radio"
+              name="speed"
+              value="3"
+            />
+            <label class="radio-label" for="3x">3x</label>
+          </div>
+        </div>
+        <div class="navigation">
+          <button
+            type="button"
+            class="navigation-btn navigation-out"
+            data-btn-down
+          >
+            <img src="./images/rotate.png" id="rotate" alt="rotate" />
+          </button>
+          <div class="navigation-center">
+            <button type="button" class="navigation-btn" data-btn-left>
+              <img src="./images/left.png" id="left" alt="left" />
+            </button>
+            <button type="button" class="navigation-btn" data-btn-pause>
+              <img
+                src="./images/pause.png"
+                id="pause"
+                width="64"
+                height="64"
+                alt="pause"
+              />
+            </button>
+            <button type="button" class="navigation-btn" data-btn-bottom>
+              <img
+                src="./images/down_1.png"
+                id="bottom"
+                width="64"
+                height="64"
+                alt="bottom"
+              />
+            </button>
+            <button type="button" class="navigation-btn" data-btn-right>
+              <img src="./images/right.png" id="right" alt="right" />
+            </button>
+          </div>
+          <button
+            type="button"
+            id="down"
+            class="navigation-btn navigation-out"
+            data-btn-right
+          >
+            <img src="./images/down.png" alt="down" />
+          </button>
+        </div>
+      </div>
     </div>
     <div class="backdrop is-hidden" data-madal>
       <div class="modal">
         <h2 class="modal-title">Game out!</h2>
-        <h3 class="scores"></h3>
+        <h3 class="modal-scores"></h3>
         <button type="button" class="modal-button" data-new-button>
           New game
         </button>
