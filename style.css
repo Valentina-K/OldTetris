@@ -24,8 +24,9 @@ p{
 }
 
 .restart-btn{
-  padding: 20px;
-  border-radius: 50%;
+  padding: 16px;
+  width: 140px;
+  border-radius: 10px;
   font-size: 20px;
   font-weight: 600;
   border: none;
@@ -111,22 +112,29 @@ p{
       }
     }
   }
-
   
   .navigation-btn{
     padding: 10px;
     border-radius: 50%;
     cursor: pointer;
     border: none;
-    width: 64px;
-    height: 64px;
+    width: 36px;
+    height: 36px;
     padding: 0;
     background-color: transparent; 
   }
+
+  .navigation-manage{
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 30px;
+  }
+  
   .navigation-center{
     display: flex;
-    gap: 20px;
+    justify-content: space-around;
   }
+  
   .navigation-out{
     margin: 0 auto;
     display: block;
