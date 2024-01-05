@@ -52,31 +52,41 @@
         </div>
         <div class="navigation">
           <div class="navigation-manage">
-            <button type="button" class="navigation-btn" data-btn-down>
+            <button type="button" class="navigation-btn tooltip" data-btn-down>
               <img src="./images/rotate.png" id="rotate" alt="rotate" />
-              <button type="button" class="navigation-btn" data-btn-pause>
-                <img src="./images/pause.png" id="pause" alt="pause" />
-              </button>
+              <span class="tooltiptext">Rotate</span>
             </button>
-            <button type="button" class="navigation-btn" data-btn-bottom>
+            <button type="button" class="navigation-btn tooltip" data-btn-pause>
+              <img src="./images/pause.png" id="pause" alt="pause" />
+              <span class="tooltiptext">Pause</span>
+            </button>
+            <button
+              type="button"
+              class="navigation-btn tooltip"
+              data-btn-bottom
+            >
               <img src="./images/down_1.png" id="bottom" alt="bottom" />
+              <span class="tooltiptext">Bottom</span>
             </button>
           </div>
           <div class="navigation-center">
-            <button type="button" class="navigation-btn" data-btn-left>
+            <button type="button" class="navigation-btn tooltip" data-btn-left>
               <img src="./images/left.png" id="left" alt="left" />
+              <span class="tooltiptext">Left</span>
             </button>
-            <button type="button" class="navigation-btn" data-btn-right>
+            <button type="button" class="navigation-btn tooltip" data-btn-right>
               <img src="./images/right.png" id="right" alt="right" />
+              <span class="tooltiptext">Right</span>
             </button>
           </div>
           <button
             type="button"
             id="down"
-            class="navigation-btn navigation-out"
+            class="navigation-btn navigation-out tooltip"
             data-btn-right
           >
             <img src="./images/down.png" alt="down" />
+            <span class="tooltiptext">Down</span>
           </button>
         </div>
       </div>

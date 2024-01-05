@@ -1,9 +1,3 @@
-// 1. Додати інші фігури
-// 2. Стилізувати нові фігури на свій погляд
-// 3. Додати функцію рандому котра буде видавати випадкову фігуру
-// 4. Ценрування фігури коли вона з'являється
-// 5. Додати функцію ранромних кольорів для кожної нової фігури
-
 const PLAYFIELD_COLUMNS = 10;
 const PLAYFIELD_ROWS = 20;
 const START_POSITION = (size) => parseInt((PLAYFIELD_COLUMNS - size) / 2);
@@ -147,42 +141,37 @@ let tetromino;
 let scores = 0;
 let timerId = null;
 let speed = 1;
+let isPause = false;
 let best_result =
   parseInt(STORAGE_RESULT) > scores ? parseInt(STORAGE_RESULT) : scores;
 
 generatePlayfield();
 generateTetromino();
 const cells = document.querySelectorAll(".tetris div");
-const newGameBtn = document.querySelector("[data-new-button]");
+const newGameBtn = document.querySelector("[data-new-button]"); //new game
 const modal_window = document.querySelector("[data-madal]");
-const radios = document.querySelectorAll(".input-radio");
-const navigationBtn = document.querySelectorAll(".navigation-btn");
+const speedRadio = document.querySelector(".speed");
+const navigationBtn = document.querySelector(".navigation");
 const restartBtn = document.querySelector(".restart-btn");
-radios.forEach((elem) => elem.addEventListener("change", onChanged));
-navigationBtn.forEach((el) => el.addEventListener("click", onBtnDown));
+
+speedRadio.addEventListener("click", onChanged);
+navigationBtn.addEventListener("click", onBtnDown);
 
 drawTetromino();
 document.addEventListener("keydown", onKeyDown);
 newGameBtn.addEventListener("click", newGameClick);
 restartBtn.addEventListener("click", onRestart);
-timerId = setInterval(() => {
-  moveTetrominoDown();
-  draw();
-}, 1000 / speed);
+startTimer();
 
 function onRestart() {
   initGame();
 }
 
 function onChanged(ev) {
-  console.dir(ev.target);
   speed = parseInt(ev.target.value);
   ev.target.blur();
   clearInterval(timerId);
-  timerId = setInterval(() => {
-    moveTetrominoDown();
-    draw();
-  }, 1000 / speed);
+  startTimer();
 }
 
 function initGame() {
@@ -192,6 +181,10 @@ function initGame() {
     .fill()
     .map(() => new Array(PLAYFIELD_COLUMNS).fill(0));
   generateTetromino();
+  startTimer();
+}
+
+function startTimer() {
   timerId = setInterval(() => {
     moveTetrominoDown();
     draw();
@@ -294,12 +287,18 @@ function onBtnDown(event) {
     case "right":
       moveTetrominoRight();
       break;
+    case "pause":
+      pauseTetromino();
+      break;
+    case "bottom":
+      bottomTetromino();
+      break;
   }
   draw();
 }
 
 function onKeyDown(event) {
-  switch (event.key) {
+  switch (event.code) {
     case "ArrowUp":
       rotateTetromino();
       break;
@@ -312,8 +311,30 @@ function onKeyDown(event) {
     case "ArrowRight":
       moveTetrominoRight();
       break;
+    case "Space":
+      pauseTetromino();
+      break;
+    case "Enter":
+      bottomTetromino();
+      break;
   }
   draw();
+}
+
+function pauseTetromino() {
+  isPause = !isPause;
+  if (isPause) clearInterval(timerId);
+  else startTimer();
+}
+
+function bottomTetromino() {
+  while (!isOutsideOfGameBoard()) {
+    tetromino.row += 1;
+  }
+  if (isOutsideOfGameBoard()) {
+    tetromino.row -= 1;
+    placeTetromino();
+  }
 }
 
 function moveTetrominoDown() {
