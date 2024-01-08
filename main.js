@@ -247,7 +247,7 @@ function drawTetromino() {
         continue;
       }
       if (tetromino.row + row < 0) {
-        continue;
+        return; //continue;
       }
       const cellIndex = convertPositionToIndex(
         tetromino.row + row,
@@ -387,7 +387,6 @@ function placeTetromino() {
     for (let column = 0; column < matrixSize; column++) {
       if (!tetromino.matrix[row][column]) continue; //если в ячейке стоит 0
       if (isOutsideTopBoard(row)) {
-        //isGameOver = true;
         return;
       }
       playfield[tetromino.row + row][tetromino.column + column] =
@@ -400,7 +399,7 @@ function placeTetromino() {
 }
 
 function endOfGameCheck() {
-  return playfield[0].some((el) => el != 0);
+  return playfield[0].some((el) => el !== 0);
 }
 
 function rotateTetromino() {
