@@ -72,6 +72,9 @@
           </div>
         </div>
         <div class="navigation">
+          <div class="info-img">
+            <img src="./images/info.png" alt="info" />
+          </div>
           <div class="navigation-manage">
             <button type="button" class="navigation-btn">
               <img src="./images/pause.png" id="pause" alt="pause" />
@@ -89,13 +92,10 @@
               <img src="./images/right.png" id="right" alt="right" />
             </button>
           </div>
-          <button type="button" class="navigation-btn navigation-out tooltip">
+          <button type="button" class="navigation-btn navigation-out">
             <img src="./images/down.png" alt="down" id="bottom" />
-            <span class="tooltiptext">Bottom "Enter"</span>
           </button>
         </div>
-        <span>Pause: "Space"</span>
-        <span>Rotate: "Up"</span>
       </div>
     </div>
     <div class="backdrop is-hidden" data-madal>
@@ -105,6 +105,13 @@
         <button type="button" class="modal-button" data-new-button>
           New game
         </button>
+      </div>
+    </div>
+    <div class="info is-hidden">
+      <div class="modal-info">
+        <span>Pause: "Space"</span>
+        <span>Rotate: "Up"</span>
+        <span>Bottom: "Enter"</span>
       </div>
     </div>
     <script src="main.js"></script>

@@ -157,6 +157,7 @@ const modal_window = document.querySelector("[data-madal]");
 const speedRadio = document.querySelector(".speed");
 const navigationBtn = document.querySelector(".navigation");
 const restartBtn = document.querySelector(".restart-btn");
+const infoBtn = document.querySelector(".info-img");
 
 speedRadio.addEventListener("click", onChanged);
 navigationBtn.addEventListener("click", onBtnDown);
@@ -166,7 +167,12 @@ drawTetrominoNext();
 document.addEventListener("keydown", onKeyDown);
 newGameBtn.addEventListener("click", newGameClick);
 restartBtn.addEventListener("click", onRestart);
+infoBtn.addEventListener("click", onInfoClick);
 startTimer();
+
+function onInfoClick() {
+  document.querySelector(".info").classList.toggle("is-hidden");
+}
 
 function onRestart() {
   initGame();
