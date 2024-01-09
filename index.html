@@ -9,10 +9,10 @@
   <body>
     <div class="scores-block">
       <p class="currentScores">Scores: <span></span></p>
+      <p class="deleteLines">Lines: <span></span></p>
       <p class="best-result">Best result: <span></span></p>
     </div>
     <div class="tetris-wrap">
-      <div class="next-figure"></div>
       <div class="tetris"></div>
       <div class="settings">
         <button type="button" class="restart-btn">Restart</button>
@@ -50,42 +50,52 @@
             <label class="radio-label" for="3x">3x</label>
           </div>
         </div>
+        <div>
+          <p>Next:</p>
+          <div class="next">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+          </div>
+        </div>
         <div class="navigation">
           <div class="navigation-manage">
-            <button type="button" class="navigation-btn tooltip" data-btn-down>
-              <img src="./images/rotate.png" id="rotate" alt="rotate" />
-              <span class="tooltiptext">Rotate "Up"</span>
-            </button>
-            <button type="button" class="navigation-btn tooltip" data-btn-pause>
+            <button type="button" class="navigation-btn">
               <img src="./images/pause.png" id="pause" alt="pause" />
-              <span class="tooltiptext">Pause "Space"</span>
             </button>
-            <button
-              type="button"
-              class="navigation-btn tooltip"
-              data-btn-bottom
-            >
-              <img src="./images/down_1.png" id="bottom" alt="bottom" />
-              <span class="tooltiptext">Bottom "Enter"</span>
+
+            <button type="button" class="navigation-btn rotate tooltip">
+              <img src="./images/rotate.png" id="rotate" alt="rotate" />
             </button>
           </div>
           <div class="navigation-center">
-            <button type="button" class="navigation-btn" data-btn-left>
+            <button type="button" class="navigation-btn">
               <img src="./images/left.png" id="left" alt="left" />
             </button>
-            <button type="button" class="navigation-btn" data-btn-right>
+            <button type="button" class="navigation-btn">
               <img src="./images/right.png" id="right" alt="right" />
             </button>
           </div>
-          <button
-            type="button"
-            id="down"
-            class="navigation-btn navigation-out"
-            data-btn-right
-          >
-            <img src="./images/down.png" alt="down" />
+          <button type="button" class="navigation-btn navigation-out tooltip">
+            <img src="./images/down.png" alt="down" id="bottom" />
+            <span class="tooltiptext">Bottom "Enter"</span>
           </button>
         </div>
+        <span>Pause: "Space"</span>
+        <span>Rotate: "Up"</span>
       </div>
     </div>
     <div class="backdrop is-hidden" data-madal>
